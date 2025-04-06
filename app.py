@@ -20,29 +20,53 @@ with open('style.css') as f:
 
 
 st.title(PAGE_TITLE, anchor=None)
-st.caption(f"<span class='caption'>De Thomas More AI-assistent voor de Camino 2025</span>", unsafe_allow_html=True)
+st.caption(f"<span class='caption'>De Thomas More Camino AI-assistent</span>", unsafe_allow_html=True)
 
 # --- Secret Code Access ---
 if 'authenticated' not in st.session_state:
     st.session_state.authenticated = False
 
 if not st.session_state.authenticated:
-    entered_code = st.text_input(
-        "Voer de geheime code in om de chatbot te gebruiken:",
-        type="password",
-        key="secret_code_input"
-    )
-    if entered_code:
-        if entered_code == secret_code:
+    query_params = st.query_params
+    url_code = query_params.get("code")
+    url_code_attempted = url_code is not None
+    url_code_valid = False
+
+    # 1. Check URL code
+    if url_code_attempted:
+        if url_code == secret_code:
             st.session_state.authenticated = True
-            # Clear the input field after successful authentication
-            st.rerun() # Rerun to hide the input field and show the chat
+            url_code_valid = True
+            st.query_params.clear() # Clear the code from URL
+            st.rerun() # Rerun to show chat
         else:
-            st.error("Ongeldige code. Probeer het opnieuw.")
-            st.stop() # Stop execution if code is wrong
-    else:
-        st.info("Voer de geheime code in om verder te gaan.")
-        st.stop() # Stop execution until code is entered
+            # URL code is present but incorrect
+            st.error("Ongeldige code opgegeven in URL. Probeer het opnieuw via het invoerveld.")
+            st.query_params.clear() # Clear the invalid code from URL
+            # Proceed to show the input field
+
+    # 2. If not authenticated via URL, show input field
+    if not url_code_valid:
+        entered_code = st.text_input(
+            "Voer de geheime code in om de chatbot te gebruiken:",
+            type="password",
+            key="secret_code_input"
+        )
+
+        # 3. Check entered code from input field
+        if entered_code:
+            if entered_code == secret_code:
+                st.session_state.authenticated = True
+                st.rerun() # Rerun to hide the input field and show the chat
+            else:
+                st.error("Ongeldige code. Probeer het opnieuw.")
+                st.stop() # Stop execution if input code is wrong
+        else:
+            # No code entered in the input field
+            if not url_code_attempted: # Show info only if no URL code was tried initially
+                 st.info("Voer de geheime code in om verder te gaan.")
+            # Stop execution until a valid code is provided
+            st.stop()
 
 # --- Chatbot Logic (only if authenticated) ---
 if st.session_state.authenticated:
