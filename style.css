@@ -1,0 +1,61 @@
+:root {
+    --PRIMARY_COLOR: #64c9c9; 
+    --PRIMARY_COLOR_LIGHT: #daf5f5; 
+    --PRIMARY_COLOR_DARK: #11475c; 
+    --SECONDARY_COLOR: #FF5722;
+    --SECONDARY_COLOR_LIGHT: #FFCCBC;
+}
+
+.stApp > *, .stBottom > * {
+    background-color: var(--SECONDARY_COLOR_LIGHT) !important;
+}
+
+.caption {
+    text-align: center;
+    display: block;
+    font-size: 1rem;
+    color: var(--PRIMARY_COLOR_DARK);
+}
+
+h1 {
+    font-size: 2rem !important;
+    text-align: center;
+    color: var(--SECONDARY_COLOR) !important;
+}
+
+
+.stCaptionContainer p {
+    font-size: 1rem !important;
+    color: var(--SECONDARY_COLOR) !important;
+    border: 1px solid var(--SECONDARY_COLOR);
+}
+
+/* Input field styling */
+.stTextInput input {
+    border: 2px solid var(--SECONDARY_COLOR);
+    border-radius: 5px;
+    padding: 10px;
+}
+/* Button styling (though chat input is not a standard button) */
+.stButton>button {
+    background-color: var(--PRIMARY_COLOR);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.stButton>button:hover {
+    opacity: 0.8;
+}
+/* Chat message styling */
+.stChatMessage {
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 10px;
+}
+/* You might need more specific selectors depending on Streamlit's structure */
+[data-testid="stChatMessage"] {
+     background-color: var(--PRIMARY_COLOR_LIGHT); /* Light teal background for messages */
+     border: 1px solid var(--PRIMARY_COLOR); /* Dark teal border for messages */
+}
