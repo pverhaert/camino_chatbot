@@ -56,9 +56,6 @@ if st.session_state.authenticated:
     if not groq_model or groq_model == "YOUR_GROQ_MODEL_HERE":
         st.error("Groq model niet gevonden of niet ingesteld in .env bestand. Controleer uw .env bestand.")
         st.stop()
-    
-    st.info(groq_model)
-    st.info(api_key)
 
     try:
         client = groq.Groq(api_key=api_key)
